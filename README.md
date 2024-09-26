@@ -1,6 +1,6 @@
 # Sobre el repositorio
 
-Este repositorio contiene las tareas del curso ME4250 - Mecatrónica, dictado en la Universidad de Chile.
+Este repositorio contiene las tareas del curso ME5150 - Robótica, dictado en la Universidad de Chile.
 
 # Instrucciones
 
@@ -24,7 +24,7 @@ Para trabajar de manera sincrónica en las tareas, se recomienda utilizar Google
 
 1. Clonar el repositorio desde GitHub:
    ```
-   git clone https://github.com/matias-saavedra-g/uch-2024-2-me4250-margaret-hamilton.git
+   git clone https://github.com/matias-saavedra-g/uch-2024-2-me5150-proyecto-a.git
    ```
 
 2. Abrir Visual Studio Code y seleccionar la carpeta del repositorio.
@@ -48,7 +48,7 @@ Para trabajar de manera sincrónica en las tareas, se recomienda utilizar Google
 
 # Integrantes
 
-- Joaquín Orellana S.
-- Josefina Livesey González
-- Martín Bordas D.
+- Diego Antinao C.
+- Felipe Farías O.
 - Matías Ignacio Saavedra Guerra
+- Nazarena Águila M.
