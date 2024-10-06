@@ -158,7 +158,8 @@ def a_star_with_obstacles(start, goal, grid, obstacles, grid_size, obstacles_hei
             return reconstruct_path(came_from, current)
         
         # Obtener vecinos del nodo actual
-        neighbors = get_neighbors(current, grid_size)
+        print("Current:", current)
+        neighbors = get_neighbors(current, grid_size, obstacles, grid, obstacles_height)
         
         for neighbor in neighbors:
             # Si el vecino está en un obstáculo, lo ignoramos
