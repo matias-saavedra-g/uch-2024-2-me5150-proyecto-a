@@ -1,9 +1,10 @@
+# Importamos las librerias necesarias
+import numpy as np
+from queue import PriorityQueue
 import pybullet as p
 import pybullet_data
 import time
-import numpy as np
-from py.pickNplace_lib import *
-
+# from pickNplace_lib import * # Descomentar si se quiere usar la libreria de funciones fuera del Jupiter Notebook
 
 # Conectar al cliente de simulación
 physicsClient = p.connect(p.GUI)

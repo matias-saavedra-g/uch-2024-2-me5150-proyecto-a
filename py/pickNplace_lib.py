@@ -1,10 +1,24 @@
+# Importamos las librerias necesarias
 import numpy as np
 from queue import PriorityQueue
 import pybullet as p
+import pybullet_data
+import time
+# from pickNplace_lib import * # Descomentar si se quiere usar la libreria de funciones fuera del Jupiter Notebook
 
 # Esta función verifica si un nodo está dentro de un obstáculo
 def is_in_obstacle(node, obstacle_height, grid_size, lista_de_obstaculos, sub_grid_divisions=10):
-    """Determina si un nodo está dentro de un obstáculo."""
+    """
+    Determina si un nodo está dentro de un obstáculo.
+    param
+    :param node: Coordenadas del nodo a verificar.
+    :param obstacle_height: Altura del obstáculo.
+    :param grid_size: Tamaño de la celda de la grilla.
+    :param lista_de_obstaculos: Lista de IDs de los obstáculos en el entorno.
+    :param sub_grid_divisions: Número de subdivisiones del nodo para verificar si está dentro de un obstáculo. Por defecto es 10.                                 
+    return
+    :return: True si el nodo está dentro de un obstáculo, False en caso contrario.
+    """
     sub_grid_size = grid_size / sub_grid_divisions
     
     # Recorre la lista de obstáculos
@@ -27,8 +41,17 @@ def is_in_obstacle(node, obstacle_height, grid_size, lista_de_obstaculos, sub_gr
 
 # Esta función genera una grilla y una lista de obstáculos en el mundo
 def grid_and_obstacles(grid_size, world_size, obstacles_height, lista_de_obstaculos):
-    """Genera una grilla y una lista de obstáculos en el mundo.
-    Esta función ya está implementada y no es necesario modificarla. """
+    """
+    Genera una grilla y una lista de obstáculos en el mundo.
+    Esta función ya está implementada y no es necesario modificarla.
+    param
+    :param grid_size: Tamaño de cada celda de la grilla.
+    :param world_size: Tamaño del mundo.
+    :param obstacles_height: Altura de los obstáculos a considerar.
+    :param lista_de_obstaculos: Lista de IDs de los obstáculos en el entorno.
+    return
+    :return: Una tupla con la grilla y la lista de obstáclos en el mundo.
+    """
     grid = []
     obstacles= []
     for x in np.arange(0, world_size*2, grid_size):
@@ -41,8 +64,15 @@ def grid_and_obstacles(grid_size, world_size, obstacles_height, lista_de_obstacu
 
 # Esta función reconstruye el camino desde el nodo inicial hasta el nodo actual
 def reconstruct_path(came_from, current):
-    """ Reconstruye el camino desde el nodo inicial hasta el nodo actual.
-    Esta función ya está implementada y no es necesario modificarla."""
+    """
+    Reconstruye el camino desde el nodo inicial hasta el nodo actual.
+    Esta función ya está implementada y no es necesario modificarla.
+    param
+    :param came_from: Diccionario que contiene los nodos visitados.
+    :param current: Nodo actual.
+    return
+    :return: Lista con el camino reconstruido.
+    """
     path = []
     while current in came_from:
         path.append(current)
@@ -52,8 +82,18 @@ def reconstruct_path(came_from, current):
 
 # Esta función obtiene los vecinos de un nodo en la grilla
 def get_neighbors(node, grid, obstacles, grid_size, height_z):
-    """" Obtiene los vecinos de un nodo en la grilla.
-    Esta función ya está implementada y no es necesario modificarla."""
+    """"
+    Obtiene los vecinos de un nodo en la grilla.
+    Esta función ya está implementada y no es necesario modificarla.
+    param
+    :param node: Nodo actual.
+    :param grid: Grilla que representa el entorno.
+    :param obstacles: Lista de IDs de los obstáculos en el entorno.
+    :param grid_size: Tamaño de cada celda de la grilla.
+    :param height_z: Altura de los obstáculos a considerar.
+    return
+    :return: Lista con los vecinos del nodo actual.
+    """
     directions = [(1, 0, 0), (0, 1, 0), (-1, 0, 0), (0, -1, 0)]  # Movimientos en 2D 
     scaled_directions = [(d[0] * grid_size, d[1] * grid_size, d[2] * grid_size) for d in directions]
     
@@ -80,17 +120,26 @@ def get_neighbors(node, grid, obstacles, grid_size, height_z):
 def a_star_with_obstacles(start, goal, grid, obstacles, grid_size, obstacles_height):
     """
     Aplica el algoritmo de A* para encontrar el camino más corto entre dos puntos en un entorno con obstáculos.
-    
+    param
     :param start: Punto de inicio (tuple con coordenadas x, y, z).
     :param goal: Punto de objetivo (tuple con coordenadas x, y, z).
     :param grid: Grilla que representa el entorno.
     :param obstacles: Lista de IDs de los obstáculos en el entorno.
     :param grid_size: Tamaño de cada celda de la grilla.
     :param obstacles_height: Altura de los obstáculos a considerar.
+    return
+    :return: Lista con el camino más corto entre el punto de inicio y el objetivo.
     """
     
     def heuristic(node, goal):
-        """Calcula la distancia heurística (Euclidiana) entre dos puntos."""
+        """
+        Calcula la distancia heurística (Euclidiana) entre dos puntos.
+        param
+        :param node: Nodo actual.
+        :param goal: Nodo objetivo.
+        return
+        :return: Distancia heurística entre los dos nodos.
+        """
         return np.linalg.norm(np.array(node) - np.array(goal))
     
     # Cola de prioridad y conjuntos de puntuaciones
@@ -131,6 +180,26 @@ def a_star_with_obstacles(start, goal, grid, obstacles, grid_size, obstacles_hei
 
 # Esta función convierte un punto del mundo de la simulación a coordenadas de la grilla
 def world_to_grid(world_point, grid_size, obstacles_height):
+    """
+    Convierte un punto del mundo de la simulación a coordenadas de la grilla.
+    De ser necesario, se puede modificar esta función, para obtener mejores resultados en la simulacion
+    param
+    :param world_point: Punto en el mundo de la simulación.
+    :param grid_size: Tamaño de cada celda de la grilla.
+    :param obstacles_height: Altura de los obstáculos a considerar.
+    return
+    :return: Punto en la grilla correspondiente al punto del mundo de la simulación.
+    """
+    x_world, y_world, z_world = world_point
+    x_grid = x_world  / 0.1  
+    x_grid = round(x_grid) * grid_size  
+    
+    y_grid = y_world / 0.1   
+    y_grid = round(y_grid) * grid_size  
+    
+    z_grid = z_world
+    
+    return (x_grid, y_grid, z_grid)
     """
     convierte un punto del mundo de la simulación a coordenadas de la grilla.
     De ser necesario, se puede modificar esta función, para obtener mejores resultados en la simulacion
